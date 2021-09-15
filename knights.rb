@@ -2,7 +2,7 @@
 
 require_relative 'graph'
 
-class BoardNode
+class KnightMoveNode
   attr_reader :x, :y, :neighbors
 
   def initialize(*coordinates)
@@ -20,7 +20,7 @@ class BoardNode
   end
 end
 
-class KnightsGraph < Graph
+class BoardGraph < Graph
   attr_reader :nodes
 
   def initialize
@@ -32,7 +32,7 @@ class KnightsGraph < Graph
       end
     end
     board_cells.each do |cell|
-      node = BoardNode.new(cell[0], cell[1])
+      node = KnightMoveNode.new(cell[0], cell[1])
       add_node(node)
     end
   end
@@ -55,5 +55,14 @@ class Knight
     potential_moves.select do |move|
       (0..7).include?(move[0]) && (0..7).include?(move[1])
     end
+  end
+
+  def knight_moves(start, finish)
+    start = KnightMoveNode.new(*start)
+    finish = KnightMoveNode.new(*finish)
+    board = BoardGraph.new
+    moves = board.bfs(finish, start).map { |node| node.coordinates }
+    puts "You made it in #{moves.length - 1} moves! Here's your path:"
+    moves.each { |move| p move }
   end
 end

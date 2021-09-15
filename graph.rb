@@ -11,6 +11,9 @@ class Graph
     @nodes << node
   end
 
+  # Function for searching for taget node via breadth-first-search
+  # Every node is put into a hash with a predecessor key as a way to
+  # backtrack the path after reaching target node
   def bfs(target, node = @nodes[0])
     frontier = QueueFrontier.new
     frontier.queue.unshift({ predecessor: nil, node: node })
@@ -24,10 +27,9 @@ class Graph
         end
         return path.reverse
       end
-
       frontier.discovered_nodes << current_node
       current_node[:node].neighbors.each do |neighbor|
-        neighbor = BoardNode.new(*neighbor)
+        neighbor = KnightMoveNode.new(*neighbor)
         unless frontier.discovered_nodes.any? { |hash| hash[:node] == neighbor }
           frontier.queue.unshift({ predecessor: current_node, node: neighbor })
         end
