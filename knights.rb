@@ -1,26 +1,22 @@
+# frozen_string_literal: true
+
+require_relative 'graph'
+
 class BoardNode
   attr_reader :x, :y, :neighbors
 
-  def initialize(x, y)
-    @x = x
-    @y = y
-    @neighbors = []
+  def initialize(*coordinates)
+    @x = coordinates[0]
+    @y = coordinates[1]
+    @neighbors = Knight.valid_moves(self)
   end
 
-  def add_edge(*nodes)
-    @neighbors.push(*nodes)
-  end
-end
-
-class Graph
-  attr_reader :nodes
-
-  def initialize
-    @nodes = []
+  def coordinates
+    [@x, @y]
   end
 
-  def add_node(node)
-    @nodes << node
+  def ==(other)
+    x == other.x && y == other.y
   end
 end
 
@@ -37,7 +33,6 @@ class KnightsGraph < Graph
     end
     board_cells.each do |cell|
       node = BoardNode.new(cell[0], cell[1])
-      node.add_edge(*Knight.valid_moves(node))
       add_node(node)
     end
   end
@@ -55,9 +50,9 @@ class Knight
       [x + 1, y - 2],
       [x - 1, y - 2],
       [x + 2, y - 1],
-      [x - 2, y - 1],
+      [x - 2, y - 1]
     ]
-    valid_moves = potential_moves.select do |move|
+    potential_moves.select do |move|
       (0..7).include?(move[0]) && (0..7).include?(move[1])
     end
   end
