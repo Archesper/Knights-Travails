@@ -1,0 +1,2 @@
+# TOP Exercise: Knight's Travails
+An exercise that consists in making use of graphs and the breadth-first search (BFS) search algorithm to find the shortest path from one chess board cell to another as a Knight.
